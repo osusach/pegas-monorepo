@@ -1,6 +1,10 @@
-import { ArrowUpRightIcon, ThumbsDownIcon, ThumbsUpIcon } from "lucide-react";
+import { ThumbsDownIcon, ThumbsUpIcon } from "lucide-react";
+import { usePreferences } from "../preferences/hook";
+import Card from "./card";
 
 export default function Home() {
+  const preferences = usePreferences().get();
+  console.log(preferences);
   return (
     <div className="mx-auto max-w-sm p-2">
       <div className="h-screen flex flex-col justify-center items-center">
@@ -16,31 +20,5 @@ export default function Home() {
         </div>
       </div>
     </div>
-  );
-}
-
-type Props = {
-  title: string;
-  company: string;
-  content: string;
-  type: "INTERNSHIP" | "NEW-GRAD" | "JUNIOR";
-};
-function Card(props: Props) {
-  return (
-    <article className="rounded-xl p-4 space-y-2 bg-sky-600 text-sky-50">
-      <h1 className="font-semibold text-xl">{props.title}</h1>
-      <h2>{props.company}</h2>
-      <p>{props.content}</p>
-      <div className="flex justify-end">
-        <a
-          className="border border-sky-50 p-2 inline-block rounded-full"
-          href="http://"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <ArrowUpRightIcon className="w-8 h-8" />
-        </a>
-      </div>
-    </article>
   );
 }

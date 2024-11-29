@@ -5,8 +5,10 @@ import RadioGroupButtons from "./radio-group-buttons";
 import { z } from "zod";
 import { areaTags, seniorityTags } from "../shared/types";
 import { Button } from "../shared/ui/button";
+import { useNavigate } from "react-router";
+import { usePreferences } from "./hook";
 
-export default function Preferencias() {
+export default function PreferencePage() {
   const [step, setStep] = useState<1 | 2>(1);
 
   const seniorityOptions = [
@@ -26,6 +28,15 @@ export default function Preferencias() {
 
   const [seniority, setSeniority] = useState<(typeof seniorityTags)[number]>();
   const [areas, setAreas] = useState<typeof areaTags | []>([]);
+
+  const navigate = useNavigate();
+  const preferences = usePreferences();
+
+  function onConfirm() {
+    if (!seniority || areas.length === 0) return;
+    const { ok } = preferences.set(seniority, areas);
+    if (ok) navigate("/");
+  }
 
   return (
     <div className="mx-auto max-w-sm p-4">
@@ -89,7 +100,10 @@ export default function Preferencias() {
             <Button onClick={() => setStep(1)} variant={"ghost"}>
               Volver
             </Button>
-            <Button disabled={areas.length === 0 || !seniority} type="submit">
+            <Button
+              disabled={areas.length === 0 || !seniority}
+              onClick={onConfirm}
+            >
               Ver ofertas
             </Button>
           </div>
